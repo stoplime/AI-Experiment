@@ -1,0 +1,33 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="GameAlpha\Player.cs">
+    <Files>
+      <File FileName="GameAlpha\AppMain.cs" Line="125" Column="5" />
+      <File FileName="GameAlpha\Bullets.cs" Line="45" Column="40" />
+      <File FileName="GameAlpha\Player.cs" Line="98" Column="6" />
+      <File FileName="GameAlpha\Enemy.cs" Line="5" Column="40" />
+      <File FileName="GameAlpha\AIPlayer.cs" Line="74" Column="29" />
+      <File FileName="GameAlpha\AIstates.cs" Line="43" Column="31" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="GameAlpha" expanded="True">
+            <Node name="Player.cs" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True">
+          <Node name="GameAlpha" expanded="True">
+            <Node name="GameAlpha" expanded="True" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

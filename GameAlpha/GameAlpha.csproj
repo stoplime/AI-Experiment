@@ -46,6 +46,8 @@
     <Compile Include="Explosions.cs" />
     <Compile Include="AIPlayer.cs" />
     <Compile Include="AIstates.cs" />
+    <Compile Include="InputPlayer.cs" />
+    <Compile Include="Input.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />

@@ -1,19 +1,30 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameAlpha\Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GameAlpha\bin\Debug\GameAlpha-unsigned\Documents\PlayerInputs.txt">
     <Files>
-      <File FileName="GameAlpha\AppMain.cs" Line="125" Column="5" />
+      <File FileName="GameAlpha\AppMain.cs" Line="201" Column="17" />
       <File FileName="GameAlpha\Bullets.cs" Line="45" Column="40" />
-      <File FileName="GameAlpha\Player.cs" Line="98" Column="6" />
+      <File FileName="GameAlpha\Player.cs" Line="147" Column="6" />
       <File FileName="GameAlpha\Enemy.cs" Line="5" Column="40" />
-      <File FileName="GameAlpha\AIPlayer.cs" Line="74" Column="29" />
+      <File FileName="GameAlpha\AIPlayer.cs" Line="9" Column="36" />
       <File FileName="GameAlpha\AIstates.cs" Line="43" Column="31" />
+      <File FileName="GameAlpha\InputPlayer.cs" Line="38" Column="41" />
+      <File FileName="GameAlpha\Input.cs" Line="12" Column="10" />
+      <File FileName="GameAlpha\bin\Debug\GameAlpha-unsigned\Documents\PlayerInputs.txt" Line="12" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Option id="ShowAllFiles" value="True" />
           <Node name="GameAlpha" expanded="True">
-            <Node name="Player.cs" selected="True" />
+            <Node name="bin" expanded="True">
+              <Node name="Debug" expanded="True">
+                <Node name="GameAlpha-unsigned" expanded="True">
+                  <Node name="Documents" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+            <Node name="InputPlayer.cs" selected="True" />
           </Node>
         </State>
       </Pad>

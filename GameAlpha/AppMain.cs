@@ -31,6 +31,8 @@ namespace GameAlpha
 		private static int time;
 		private static bool once;
 		
+		private static InputPlayer IP;
+		
 		public static int method(int a, int b)
 		{
 			//do something here
@@ -43,6 +45,7 @@ namespace GameAlpha
 		
 		public static void Main (string[] args)
 		{
+			IP = new InputPlayer();
 			Initialize ();
 
 			while (run) {
@@ -128,8 +131,10 @@ namespace GameAlpha
 			//character
 			if(AIMode){
 				player.Update(gamePadData,scoreValue,ref playerBulletList, ref enemyBulletList, ai.MoveLeft(),ai.MoveRight(),ai.MoveUp(),ai.MoveDown(),ai.FireRate());
+				
 			}else{
 				player.Update(gamePadData,scoreValue,ref playerBulletList, ref enemyBulletList, false,false,false,false,false);
+				IP.Update(gamePadData);
 			}
 			
 			ai.Update(scoreValue,player,turrent);
@@ -193,6 +198,7 @@ namespace GameAlpha
 			if((gamePadData.Buttons & GamePadButtons.Select) != 0){
 				run = false;
 			}
+			IP.Dispose();
 			score.X = 300;
 			score.Y = 260;
 			score.Text = "Score:"+scoreValue+"  Press Z to End Game. X to restart";
@@ -202,7 +208,7 @@ namespace GameAlpha
 				iteration++;
 				explodePlayer = null;
 				explode = null;
-				Initialize();
+				Initialize();// init again
 				stopGame = false;
 			}
 			

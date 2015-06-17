@@ -6,7 +6,6 @@ namespace GameAlpha
 {
 	public class AIPlayer
 	{
-		private GraphicsContext graphics;
 		//private Player playerState0;
 		//private Enemy enemyState0;
 		private Vector3[] optimalPos;
@@ -28,12 +27,11 @@ namespace GameAlpha
 		private Random rand;
 		//private int current;
 		
-		public AIPlayer (GraphicsContext graphics)
+		public AIPlayer ()
 		{
-			this.graphics = graphics;
 			rand = new Random();
 			currentRun = 0;
-			currentOptimalPos = new Vector3(rand.Next(0,graphics.Screen.Width),rand.Next(0,graphics.Screen.Height),0);
+			currentOptimalPos = new Vector3(rand.Next(0,Global.Graphics.Screen.Width),rand.Next(0,Global.Graphics.Screen.Height),0);
 			optimalPos = new Vector3[10];
 			//featuresScore = new int[5];
 			featureValue = new int[5];
@@ -69,8 +67,8 @@ namespace GameAlpha
 			if(currentOptimalPos.Equals(highestScorePos)){
 				//take the second highest score and project a better optimal pos
 				//or random for the time being
-				currentOptimalPos.X = rand.Next(0,graphics.Screen.Width);
-				currentOptimalPos.Y = rand.Next(0,graphics.Screen.Height);
+				currentOptimalPos.X = rand.Next(0,Global.Graphics.Screen.Width);
+				currentOptimalPos.Y = rand.Next(0,Global.Graphics.Screen.Height);
 				currentOptimalPos.Z = 0;
 			}else{
 				//revert back the the highest score

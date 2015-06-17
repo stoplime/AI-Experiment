@@ -48,6 +48,8 @@
     <Compile Include="AIstates.cs" />
     <Compile Include="InputPlayer.cs" />
     <Compile Include="Input.cs" />
+    <Compile Include="Text.cs" />
+    <Compile Include="Global.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />

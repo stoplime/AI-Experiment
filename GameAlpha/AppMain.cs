@@ -13,7 +13,6 @@ namespace GameAlpha
 {
 	public class AppMain
 	{
-		private static GraphicsContext graphics;
 		private static Background bg,bg2;
 		private static Player player;
 		private static Enemy turrent;
@@ -32,14 +31,6 @@ namespace GameAlpha
 		private static bool once;
 		
 		private static InputPlayer IP;
-		
-		public static int method(int a, int b)
-		{
-			//do something here
-			int sum;
-			sum = a+b;
-			return sum;
-		}
 		
 		private static AIPlayer ai;
 		
@@ -62,11 +53,11 @@ namespace GameAlpha
 		public static void Initialize ()
 		{
 			// Set up the graphics system
-			if(graphics == null){
-				graphics = new GraphicsContext ();
+			if(Global.Graphics == null){
+				Global.Graphics = new GraphicsContext ();
 			}
 			if(ai == null){
-				ai = new AIPlayer(graphics);
+				ai = new AIPlayer(Global.Graphics);
 			}
 			once = true;
 			time = 0;
@@ -74,19 +65,19 @@ namespace GameAlpha
 			stopGame = false;
 			alpha = 0f;
 			whiteTexture = new Texture2D("/Application/assets/White.png",false);
-			endGame = new Sprite(graphics,whiteTexture);
+			endGame = new Sprite(Global.Graphics,whiteTexture);
 			
 			Texture2D bgTexture1 = new Texture2D("/Application/assets/Bg_vertical_scroll.png",false);
-			bg = new Background(graphics,bgTexture1);
+			bg = new Background(Global.Graphics,bgTexture1);
 			Texture2D bgTexture2 = new Texture2D("/Application/assets/Bg_vertical_scroll3.png",false);
-			bg2 = new Background(graphics,bgTexture2);
+			bg2 = new Background(Global.Graphics,bgTexture2);
 			
 			//character
-			player = new Player(graphics);
+			player = new Player(Global.Graphics);
 			playerBulletList = new List<Bullets>();
 			
 			//enemy
-			turrent = new Enemy(graphics);
+			turrent = new Enemy(Global.Graphics);
 			enemyBulletList = new List<Bullets>();
 			
 			scoreValue = 0;
@@ -95,7 +86,7 @@ namespace GameAlpha
 			ex1 = new Texture2D("/Application/assets/explosion1.png",false);
 			ex2 = new Texture2D("/Application/assets/explosion2.png",false);
 			
-			UISystem.Initialize(graphics);
+			UISystem.Initialize(Global.Graphics);
 			Scene scene = new Scene();
 			score = new Label();
 			score.X = 10;
@@ -106,6 +97,24 @@ namespace GameAlpha
 			UISystem.SetScene(scene, null);
 			
 		
+			
+		}
+		
+		public static void NewGame () 
+		{
+			
+		}
+		
+		public static void initTextures () 
+		{
+			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll.png",false));		//	0	BG 1
+			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll3.png",false));	//	1	BG 2
+			
+			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll.png",false));	//	0	BG 1
+			
+			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll.png",false));	//	0	BG 1
+			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll.png",false));	//	0	BG 1
+			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll.png",false));	//	0	BG 1
 			
 		}
 
@@ -141,7 +150,7 @@ namespace GameAlpha
 			
 			if(player.Hit){
 				exposPlayer = new Vector3(player.X,player.Y,0);
-				explodePlayer = new Explosions(graphics,ex0,ex1,ex2,exposPlayer);
+				explodePlayer = new Explosions(Global.Graphics,ex0,ex1,ex2,exposPlayer);
 				
 				player.Hit = false;
 				if(player.Hp == 0){
@@ -153,7 +162,7 @@ namespace GameAlpha
 			turrent.Update(gamePadData,player.X,player.Y,ref playerBulletList, ref enemyBulletList);
 			if(turrent.Hit){
 				expos = new Vector3(turrent.X,turrent.Y,0);
-				explode = new Explosions(graphics,ex0,ex1,ex2,expos);
+				explode = new Explosions(Global.Graphics,ex0,ex1,ex2,expos);
 				
 				turrent.Hit = false;
 				turrent.Y = 1000;
@@ -219,8 +228,8 @@ namespace GameAlpha
 		public static void Render ()
 		{
 			// Clear the screen
-			graphics.SetClearColor (0.0f, 0.0f, 0.0f, 0.0f);
-			graphics.Clear ();
+			Global.Graphics.SetClearColor (0.0f, 0.0f, 0.0f, 0.0f);
+			Global.Graphics.Clear ();
 			
 			bg.Render();
 			bg2.Render();
@@ -247,7 +256,7 @@ namespace GameAlpha
 			UISystem.Render();
 			
 			// Present the screen
-			graphics.SwapBuffers ();
+			Global.Graphics.SwapBuffers ();
 		}
 	}
 }

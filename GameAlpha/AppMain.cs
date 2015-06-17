@@ -13,7 +13,6 @@ namespace GameAlpha
 {
 	public class AppMain
 	{
-		private static Background bg,bg2;
 		private static Player player;
 		private static Enemy turrent;
 		private static Label score;
@@ -27,8 +26,6 @@ namespace GameAlpha
 		private static float alpha;
 		private static Sprite endGame;
 		private static int iteration = 0;
-		private static int time;
-		private static bool once;
 		
 		private static InputPlayer IP;
 		
@@ -53,14 +50,10 @@ namespace GameAlpha
 		public static void Initialize ()
 		{
 			// Set up the graphics system
-			if(Global.Graphics == null){
-				Global.Graphics = new GraphicsContext ();
-			}
-			if(ai == null){
-				ai = new AIPlayer(Global.Graphics);
-			}
-			once = true;
-			time = 0;
+			Global.Graphics = new GraphicsContext ();
+			
+			Global.AI = new AIPlayer();
+			
 			AIMode = true;
 			stopGame = false;
 			alpha = 0f;
@@ -132,10 +125,6 @@ namespace GameAlpha
 			}
 			//turrent.PlayerBulletList = player.PlayerBulletList;//syncs lists
 			
-			if(once && time>30){
-				once = false;
-			}
-			time++;
 			
 			//character
 			if(AIMode){
@@ -190,7 +179,7 @@ namespace GameAlpha
 				}
 			}
 			
-			if((gamePadData.Buttons & GamePadButtons.Start) != 0 && once == false){
+			if((gamePadData.Buttons & GamePadButtons.Start) != 0 && (gamePadData.ButtonsPrev & GamePadButtons.Start) == 0){
 				ai.ScoreAndReset(scoreValue);
 				iteration++;
 				explodePlayer = null;

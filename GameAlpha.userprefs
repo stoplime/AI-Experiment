@@ -1,16 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameAlpha\bin\Debug\GameAlpha-unsigned\Documents\PlayerInputs.txt">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GameAlpha\AppMain.cs">
     <Files>
-      <File FileName="GameAlpha\AppMain.cs" Line="201" Column="17" />
-      <File FileName="GameAlpha\Bullets.cs" Line="45" Column="40" />
+      <File FileName="GameAlpha\AppMain.cs" Line="57" Column="10" />
+      <File FileName="GameAlpha\Bullets.cs" Line="9" Column="20" />
       <File FileName="GameAlpha\Player.cs" Line="147" Column="6" />
       <File FileName="GameAlpha\Enemy.cs" Line="5" Column="40" />
-      <File FileName="GameAlpha\AIPlayer.cs" Line="9" Column="36" />
+      <File FileName="GameAlpha\AIPlayer.cs" Line="8" Column="3" />
       <File FileName="GameAlpha\AIstates.cs" Line="43" Column="31" />
       <File FileName="GameAlpha\InputPlayer.cs" Line="38" Column="41" />
       <File FileName="GameAlpha\Input.cs" Line="12" Column="10" />
-      <File FileName="GameAlpha\bin\Debug\GameAlpha-unsigned\Documents\PlayerInputs.txt" Line="12" Column="3" />
+      <File FileName="GameAlpha\Global.cs" Line="14" Column="42" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -24,7 +24,7 @@
                 </Node>
               </Node>
             </Node>
-            <Node name="InputPlayer.cs" selected="True" />
+            <Node name="AppMain.cs" selected="True" />
           </Node>
         </State>
       </Pad>

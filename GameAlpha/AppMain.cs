@@ -13,32 +13,14 @@ namespace GameAlpha
 {
 	public class AppMain
 	{
-		private static Player player;
-		private static Enemy turrent;
-		private static Label score;
-		private static bool run = true;
-		private static int scoreValue;
-		private static Explosions explode,explodePlayer;
-		private static List<Bullets> playerBulletList, enemyBulletList;
-		private static Texture2D ex0,ex1,ex2,whiteTexture;
-		private static Vector3 expos,exposPlayer;
-		private static bool stopGame,AIMode;
-		private static float alpha;
-		private static Sprite endGame;
-		private static int iteration = 0;
-		
-		private static InputPlayer IP;
-		
-		private static AIPlayer ai;
-		
 		public static void Main (string[] args)
 		{
-			IP = new InputPlayer();
 			Initialize ();
 
-			while (run) {
+			while (Global.Run) {
 				SystemEvents.CheckEvents ();
-				if(stopGame == false){
+				BasicUpdate();
+				if(!Global.StopGame){
 					Update ();
 				}else{
 					UpdateEndGame();
@@ -54,43 +36,24 @@ namespace GameAlpha
 			
 			Global.AI = new AIPlayer();
 			
-			AIMode = true;
-			stopGame = false;
-			alpha = 0f;
-			whiteTexture = new Texture2D("/Application/assets/White.png",false);
-			endGame = new Sprite(Global.Graphics,whiteTexture);
+			Global.BG = new Background[2];
+			Global.BG[0] = new Background(Global.Textures[0]);
+			Global.BG[1] = new Background(Global.Textures[1]);
 			
-			Texture2D bgTexture1 = new Texture2D("/Application/assets/Bg_vertical_scroll.png",false);
-			bg = new Background(Global.Graphics,bgTexture1);
-			Texture2D bgTexture2 = new Texture2D("/Application/assets/Bg_vertical_scroll3.png",false);
-			bg2 = new Background(Global.Graphics,bgTexture2);
+			Global.EndGameSprite = new Sprite(Global.Graphics,Global.Textures[2]);
 			
-			//character
-			player = new Player(Global.Graphics);
-			playerBulletList = new List<Bullets>();
+			Global.Run = true;
+			Global.StopGame = false;
+			Global.Score = 0;
+			Global.ScoreDisplay = new Text(10,10,"Score: "+Global.Score);
 			
-			//enemy
-			turrent = new Enemy(Global.Graphics);
-			enemyBulletList = new List<Bullets>();
+			Global.Player = new Player();
+			Global.Enemies = new List<Enemy>();
 			
-			scoreValue = 0;
-			
-			ex0 = new Texture2D("/Application/assets/explosion0.png",false);
-			ex1 = new Texture2D("/Application/assets/explosion1.png",false);
-			ex2 = new Texture2D("/Application/assets/explosion2.png",false);
+			Global.EnemyBullets = new List<Bullets>();
+			Global.PlayerBullets = new List<Bullets>();
 			
 			UISystem.Initialize(Global.Graphics);
-			Scene scene = new Scene();
-			score = new Label();
-			score.X = 10;
-			score.Y = 10;
-			score.Width = 940;
-			score.Text = ""+scoreValue;
-			scene.RootWidget.AddChildLast(score);
-			UISystem.SetScene(scene, null);
-			
-		
-			
 		}
 		
 		public static void NewGame () 
@@ -103,46 +66,45 @@ namespace GameAlpha
 			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll.png",false));		//	0	BG 1
 			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll3.png",false));	//	1	BG 2
 			
-			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll.png",false));	//	0	BG 1
+			Global.Textures.Add(new Texture2D("/Application/assets/White.png",false));					//	2	White texture
+			Global.Textures.Add(new Texture2D("/Application/assets/explosion.png",false));				//	3	explode 1
 			
-			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll.png",false));	//	0	BG 1
-			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll.png",false));	//	0	BG 1
-			Global.Textures.Add(new Texture2D("/Application/assets/Bg_vertical_scroll.png",false));	//	0	BG 1
+		}
+
+		public static void BasicUpdate ()
+		{
+			// Query gamepad for current state
+			Global.GPD = GamePad.GetData (0);
+			//kills game when pressed z
+			if((Global.GPD.Buttons & GamePadButtons.Select) != 0){
+				Global.Run = false;
+			}
+			
+			Global.ScoreDisplay.Update("Score: "+Global.Score);
 			
 		}
 
 		public static void Update ()
 		{
-			// Query gamepad for current state
-			var gamePadData = GamePad.GetData (0);
-			
-			//kills game when pressed z
-			if((gamePadData.Buttons & GamePadButtons.Select) != 0){
-				run = false;
+			if((Global.GPD.Buttons & GamePadButtons.L) != 0){
+				Global.AIMode = false;
 			}
-			if((gamePadData.Buttons & GamePadButtons.L) != 0){
-				AIMode = false;
-			}
-			//turrent.PlayerBulletList = player.PlayerBulletList;//syncs lists
-			
 			
 			//character
-			if(AIMode){
-				player.Update(gamePadData,scoreValue,ref playerBulletList, ref enemyBulletList, ai.MoveLeft(),ai.MoveRight(),ai.MoveUp(),ai.MoveDown(),ai.FireRate());
+			if(Global.AIMode){
+				Global.Player.Update();
 				
 			}else{
-				player.Update(gamePadData,scoreValue,ref playerBulletList, ref enemyBulletList, false,false,false,false,false);
-				IP.Update(gamePadData);
+				Global.Player.Update();
+				
 			}
 			
-			ai.Update(scoreValue,player,turrent);
+			ai.Update(scoreValue,Global.Player,turrent);
 			
-			if(player.Hit){
-				exposPlayer = new Vector3(player.X,player.Y,0);
-				explodePlayer = new Explosions(Global.Graphics,ex0,ex1,ex2,exposPlayer);
-				
-				player.Hit = false;
-				if(player.Hp == 0){
+			if(Global.Player.Hit){
+				Global.ExplodeEffects.Add(new Explosions(Global.Player.Pos));
+				Global.Player.Hit = false;
+				if(Global.Player.Hp <= 0){
 					stopGame = true;
 				}
 			}
@@ -163,8 +125,8 @@ namespace GameAlpha
 			score.Text = "Press s to shoot:"+scoreValue+"                                   "+iteration+"                                           "+"Health:"+player.Hp;
 			
 			//background
-			bg.Update(0.5f);
-			bg2.Update(1f);
+			Global.BG[0].Update(0.5f);
+			Global.BG[1].Update(1f);
 			
 			if(explode != null){
 				explode.Update();

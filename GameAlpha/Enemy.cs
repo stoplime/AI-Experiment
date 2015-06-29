@@ -10,113 +10,62 @@ namespace GameAlpha
 {
 	public class Enemy
 	{
-		private Texture2D bulletTexture,enemy1Texture;
-		private GraphicsContext graphics;
-		private Sprite eTurrent,eTurrentShadow;
-		private Bullets bullet;
-		private List<Bullets> enemyBulletList,playerBulletList;
-		private string id = "turrent";
-		private int hp;
-		private int range;
-		private Random rand;
-		private int time,delay,distToPlayer;
-		private int score;
-		private bool hit;
+		private Sprite enemy, 	enemyShadow;
+		private Vector3 pos,	posShadow;
+		private float rot;
 		
-		public string Id
-		{
-			get{return id;}
-		}
-		public bool Hit
-		{
-			get{return hit;}
-			set{hit = value;}
-		}
-		public float X
-		{
-			get{return eTurrent.Position.X;}
-			set{eTurrent.Position.X = value;}
-		}
-		public float Y
-		{
-			get{return eTurrent.Position.Y;}
-			set{eTurrent.Position.Y = value;}
-		}
-		public float Rot
-		{
-			get{return eTurrent.Rotation;}
-			set{eTurrent.Rotation = value;}
-		}
-		public int Score
-		{
-			get{return score;}
-		}
-		public List<Bullets> PlayerBulletList
-		{
-			get{return playerBulletList;}
-			set{playerBulletList = value;}
-		}
-		public int Hp
-		{
-			get{return hp;}
-			set{
-				if(value >= 0){
-					hp = (int)value;
-				}else{
-					hp = 0;
-				}
-			}
-		}
+		private int timer;
 		
-		public Enemy (GraphicsContext gc)
+		#region parameters
+		private const float range = 200;
+		private const int fireRate = 60;
+		#endregion
+		
+		#region properties
+		private bool dead;
+		public bool Dead
 		{
-			graphics = gc;
-			rand = new Random();
-			
-			enemy1Texture = new Texture2D("/Application/assets/Enemy1.png",false);
-			bulletTexture = new Texture2D("/Application/assets/bullet.png",false);
-			
-			eTurrent = new Sprite(graphics,enemy1Texture);
-			eTurrent.Center.X = 0.5f;
-			eTurrent.Center.Y = 0.5f;
-			
-			eTurrent.Position.X = rand.Next(16,graphics.Screen.Width-15);
-			eTurrent.Position.Y = 0;
-			
-			eTurrentShadow = new Sprite(graphics,enemy1Texture);
-			eTurrentShadow.Center.X = 0.5f;
-			eTurrentShadow.Center.Y = 0.5f;
-			
-			eTurrentShadow.SetColor(0f,0f,0f,0.4f);
-			
-			
-			hp = 100;
-			range = 300;
-			delay = 60;
-			
-			time = 0;
-			score = 0;
+			get{return dead;}
+			set{dead = value;}
 		}
+		#endregion
+		
+		#region constructor
+		public Enemy (Vector3 pos)
+		{
+			this.pos = pos;
+			posShadow = pos + new Vector3(-5,5,0);
+			dead = false;
+			
+			enemy = new Sprite(Global.Graphics,Global.Textures[]);
+			enemy.Center = new Vector2(0.5f,0.5f);
+			enemy.Position = pos;
+			
+			enemyShadow = new Sprite(Global.Graphics,Global.Textures[]);
+			enemyShadow.Center = enemy.Center();
+			enemyShadow.Position = posShadow;
+			
+			timer = 0;
+		}
+		#endregion
 		
 		public void Update(GamePadData gamePadData,float playerX,float playerY,ref List<Bullets> pbl,ref List<Bullets> ebl)
 		{
-			eTurrent.Rotation = FMath.Atan2((playerY-eTurrent.Position.Y),(playerX-eTurrent.Position.X));
-			distToPlayer = (int)FMath.Sqrt(FMath.Pow(playerY-eTurrent.Position.Y,2f)+FMath.Pow(playerX-eTurrent.Position.X,2f));
-			playerBulletList = pbl;
-			enemyBulletList = ebl;
+			timer++;
 			
-			eTurrent.Position.Y++;
-			if(eTurrent.Position.Y > graphics.Screen.Height+20){
-				eTurrent.Position.Y = -16;
-				eTurrent.Position.X = rand.Next(16,graphics.Screen.Width-15);
+			pos.Y++;
+			rot = pos.Angle(Global.Player.Pos);
+			
+			if(pos.Y > Global.Graphics.Screen.Height+20){
+				dead = true;
 			}
 			
-			eTurrentShadow.Position.X = eTurrent.Position.X-5;
-			eTurrentShadow.Position.Y = eTurrent.Position.Y+5;
+			posShadow = pos + new Vector3(-5,5,0);
 			
-			if(time > delay){
-				if(distToPlayer < range ){
+			if(timer > fireRate){
+				if(pos.DistanceSquared(Global.Player.Pos) < range*range ){
 					time = 0;
+					//****************************************** Change Bullets ************************************
 					bullet = new Bullets(bulletTexture,graphics,eTurrent.Position.X,eTurrent.Position.Y,2f*distToPlayer,true);
 					bullet.X = eTurrent.Position.X;
 					bullet.Y = eTurrent.Position.Y;
@@ -124,36 +73,23 @@ namespace GameAlpha
 					enemyBulletList.Add(bullet);
 				}
 			}
-			//bullet updates
-			for(var i=enemyBulletList.Count-1;i>0;i--){
-				enemyBulletList[i].Update();
-				if(enemyBulletList[i].Hit){
-					enemyBulletList.RemoveAt(i);
-				}
-			}
-			for(var i=playerBulletList.Count-1;i>0;i--){
-				if(playerBulletList[i].NearHit){
-					if(FMath.Pow(playerBulletList[i].Y-eTurrent.Position.Y,2f)+FMath.Pow(playerBulletList[i].X-eTurrent.Position.X,2f) <= FMath.Pow(eTurrent.Width/2,2)){
-						playerBulletList.RemoveAt(i);
-						score++;
-						hit = true;
-					}
-				}
-			}
 			
-			time ++;
-			
+			enemy.Position = pos;
+			enemyShadow.Position = posShadow;
+			enemy.Rotation = rot;
+			enemyShadow.Rotation = rot;
 		}
 		
 		public void Render()
 		{
-			eTurrentShadow.Render();
+			enemyShadow.Render();
 			
-			if(enemyBulletList != null){
-				for(var i=enemyBulletList.Count-1;i>0;i--){
-					enemyBulletList[i].Render();
+			if(Global.EnemyBullets != null){
+				foreach (Bullets b in Global.EnemyBullets) {
+					b.Render();
 				}
 			}
+			
 			eTurrent.Render();
 		}
 		

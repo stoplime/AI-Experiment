@@ -10,36 +10,20 @@ namespace GameAlpha
 {
 	public class Player
 	{
-		private Texture2D bulletTexture,playerTexture;
-		private GraphicsContext graphics;
 		private Sprite player,playerShadow;
-		private List<Bullets> enemyBulletList,playerBulletList;
-		private string id = "player";
+		private Vector3 pos;
 		private float speed;
 		private int hp;
-		private Bullets bullet;
-		private int time,delay;
+		private int time;
+		private int fireRate;
 		private bool hit;
 		
-		public string Id
+		public float Pos
 		{
-			get{return id;}
+			get{return pos;}
+			set{pos = value;}
 		}
-		public float X
-		{
-			get{return player.Position.X;}
-			set{player.Position.X = value;}
-		}
-		public float Y
-		{
-			get{return player.Position.Y;}
-			set{player.Position.Y = value;}
-		}
-		public float Rot
-		{
-			get{return player.Rotation;}
-			set{player.Rotation = value;}
-		}
+		
 		public bool Hit
 		{
 			get{return hit;}
@@ -57,73 +41,62 @@ namespace GameAlpha
 			}
 		}
 		
-		public Player (GraphicsContext gc)
+		public Player ()
 		{
-			graphics = gc;
-			playerTexture = new Texture2D("/Application/assets/Aircraft.png",false);
-			bulletTexture = new Texture2D("/Application/assets/bullet.png",false);
+			player = new Sprite(Global.Graphics,Global.Textures[4]);
+			player.Center = new Vector2(0.5f,0.5f);
 			
-			player = new Sprite(graphics,playerTexture);
-			player.Center.X = 0.5f;
-			player.Center.Y = 0.5f;
+			pos.X = graphics.Screen.Rectangle.Width/2;
+			pos.Y = graphics.Screen.Rectangle.Height/2+200;
 			
-			player.Position.X = graphics.Screen.Rectangle.Width/2;
-			player.Position.Y = graphics.Screen.Rectangle.Height/2+200;
-			
-			playerShadow = new Sprite(graphics,playerTexture);
-			playerShadow.Center.X = 0.5f;
-			playerShadow.Center.Y = 0.5f;
-			playerShadow.Scale.X = 0.7f;
-			playerShadow.Scale.Y = 0.7f;
+			playerShadow = new Sprite(Global.Graphics,Global.Textures[4]);
+			playerShadow.Center = new Vector2(0.5f,0.5f);
+			playerShadow.Scale = new Vector2(0.7f,0.7f);
 			
 			playerShadow.SetColor(0f,0f,0f,0.4f);
 			
 			
 			hp = 5;
 			speed = 2f;
-			delay = 10;
+			fireRate = 10;
 			
 			time = 0;
 			
 		}
 		
-		public void Update(GamePadData gamePadData, int v, ref List<Bullets> pbl,ref List<Bullets> ebl,bool l,bool r,bool u, bool d, bool f)
+		public void Update(GamePadData gamePadData)
 		{
-			playerBulletList = pbl;
-			enemyBulletList = ebl;
+			float hWidth = player.Width/2;
+			float hHeight = player.Height/2;
 			//movement
-			if((gamePadData.Buttons & GamePadButtons.Left) != 0 || l){
-				if((player.Position.X-player.Width/2) > 0){
-					player.Position.X -= speed;
+			if((gamePadData.Buttons & GamePadButtons.Left) != 0){
+				if((pos.X-hWidth) > 0){
+					pos.X -= speed;
 				}
 			}
-			if((gamePadData.Buttons & GamePadButtons.Right) != 0 || r){
-				if((player.Position.X+player.Width/2) < graphics.Screen.Rectangle.Width){
-					player.Position.X += speed;
+			if((gamePadData.Buttons & GamePadButtons.Right) != 0){
+				if((pos.X+hWidth) < Global.Graphics.Screen.Width){
+					pos.X += speed;
 				}
 			}
-			if((gamePadData.Buttons & GamePadButtons.Up) != 0 || u){
-				if((player.Position.Y-player.Height/2) > 0){
-					player.Position.Y -= speed;
+			if((gamePadData.Buttons & GamePadButtons.Up) != 0){
+				if((pos.Y-hHeight) > 0){
+					pos.Y -= speed;
 				}
 			}
-			if((gamePadData.Buttons & GamePadButtons.Down) != 0 || d){
-				if((player.Position.Y+player.Height/2) < graphics.Screen.Rectangle.Height){
-					player.Position.Y += speed;
+			if((gamePadData.Buttons & GamePadButtons.Down) != 0){
+				if((pos.Y+hHeight) < Global.Graphics.Screen.Height){
+					pos.Y += speed;
 				}
 			}
 			
-			playerShadow.Position.X = player.Position.X-50;
-			playerShadow.Position.Y = player.Position.Y+50;
+			playerShadow.Position = new Vector3(pos.X-50,pos.Y+50,0);
 			
 			//firing
-			if((gamePadData.Buttons & GamePadButtons.Cross) != 0 || f){
-				if(time > delay){
+			if((gamePadData.Buttons & GamePadButtons.Cross) != 0){
+				if(time > fireRate){
 					time = 0;
-					bullet = new Bullets(bulletTexture,graphics,player.Position.X,player.Position.Y);
-					bullet.X = player.Position.X;
-					bullet.Y = player.Position.Y;
-					bullet.Rot = -FMath.PI/2;
+					bullet = new Bullets(pos,-FMath.PI/2);
 					playerBulletList.Add(bullet);
 				}
 			}

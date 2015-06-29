@@ -10,19 +10,15 @@ namespace GameAlpha
 {
 	public class Background
 	{
-		private GraphicsContext graphics;
 		private Sprite bg1,bg2;
-		private Texture2D BgTexture;
 		private int height;
 		
-		public Background (GraphicsContext gc, Texture2D tx1)
+		public Background (Texture2D tx1)
 		{
-			graphics = gc;
-			BgTexture = tx1;
-			bg1 = new Sprite(graphics,BgTexture);
-			bg2 = new Sprite(graphics,BgTexture);
+			bg1 = new Sprite(Global.Graphics,tx1);
+			bg2 = new Sprite(Global.Graphics,tx1);
 			
-			height = graphics.Screen.Height;
+			height = Global.Graphics.Screen.Height;
 			
 			bg2.Position.Y = -height;
 		}

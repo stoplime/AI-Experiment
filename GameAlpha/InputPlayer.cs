@@ -41,11 +41,10 @@ namespace GameAlpha
 				}
 			}
 			if (currentInput.Count > 0) {
-				
 				sw.Write(";");
+				counter++;
 			}
 			
-			counter++;
 		}
 		
 		public List<Input> ReadInputs (GamePadData gamePadData)

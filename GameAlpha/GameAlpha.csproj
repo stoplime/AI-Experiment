@@ -50,6 +50,7 @@
     <Compile Include="Input.cs" />
     <Compile Include="Text.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="Spawner.cs" />
   </ItemGroup>
   <ItemGroup>
     <ShaderProgram Include="shaders\Simple.fcg" />
@@ -67,16 +68,12 @@
   <ItemGroup>
     <Content Include="assets\Bg_vertical_scroll.png" />
     <Content Include="assets\Aircraft.png" />
-    <Content Include="assets\Aircraft_bw.png" />
-    <Content Include="assets\Aircraft_shadow.png" />
     <Content Include="assets\Bg_vertical_scroll3.png" />
     <Content Include="assets\Enemy1.png" />
     <Content Include="assets\bullet.png" />
     <Content Include="assets\Enemy2.png" />
     <Content Include="assets\bullet2.png" />
-    <Content Include="assets\explosion0.png" />
-    <Content Include="assets\explosion1.png" />
-    <Content Include="assets\explosion2.png" />
     <Content Include="assets\White.png" />
+    <Content Include="assets\explosion.png" />
   </ItemGroup>
 </Project>
